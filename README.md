@@ -2,7 +2,6 @@
 
 📝 TODO: (Listed in order of importance, most important first)
 
-*   **Channel Creation Date info box:** This one's a tough one, but very useful for bot detection.
 *   **Profile Cards info box:** (support.google.com/youtube/answer/9409333) Very helpful information like total hearts, total comments, and special status (if available, like Top Commenter) are tucked away, only accessible by clicking the commenter's profile picture. Why not put all of them in info boxes?
 *   **Subscription Status info box:** Checks if the commenter is subscribed to the video's creator, so long as their subscription list is public.
 *   **Profile Picture Preview on Hover:** Hover over a commenter’s profile image to see a larger version, without the round overlay. Planning to add banner alongside it if possible.
