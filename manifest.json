@@ -1,15 +1,18 @@
 ﻿{
   "manifest_version": 2,
   "name": "YouTube Ultimate Comment Enhancer",
+  "short_name": "YouTube Comment Enhancer",
   "version": "5.0.0",
   "description": "Subscriber Count, Channel Location, Channel Creation Date, Total Videos, Latest Video's Views and Upload Date, Description and Link Indicator for YouTube comment section.",
   "author": "Nhân Trí",
+
   "icons": {
 	"32": "icon32.png",
 	"48": "icon48.png",
 	"64": "icon64.png",
 	"128": "icon128.png"
   },
+
   "content_scripts": [
 	{
 	  "matches": [
@@ -21,9 +24,19 @@
 	  "run_at": "document_end"
 	}
   ],
+
   "permissions": [
 	"https://www.youtube.com/watch*",
 	"https://www.youtube.com/shorts*",
 	"https://www.youtube.com/*/community*"
-  ]
+  ],
+
+  "homepage_url": "github.com/nhantrichuyenanh/YouTube-Ultimate-Comment-Section-Enhancer",
+
+  "browser_specific_settings": {
+	"gecko": {
+	  "id": "{03e9982b-4272-4ae4-9a37-2e65a3763d58}",
+	  "strict_min_version": "57.0"
+	}
+  }
 }
