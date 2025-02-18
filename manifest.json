@@ -1,0 +1,41 @@
+﻿{
+  "manifest_version": 2,
+  "name": "YouTube Ultimate Comment Enhancer",
+  "short_name": "YT Ult Comment Enhancer",
+  "version": "1.0.0",
+  "description": "Extracts all information from the commenter's about page: Subscriber Count, Channel Location, Channel Creation Date, Total Videos, Latest Video's Views and Upload Date, Description and Link.",
+  "author": "Nhân Trí",
+
+  "icons": {
+	"32": "icon32.png",
+	"48": "icon48.png",
+	"64": "icon64.png",
+	"128": "icon128.png"
+  },
+
+  "content_scripts": [
+	{
+	  "matches": [
+		"https://www.youtube.com/watch*",
+		"https://www.youtube.com/shorts*",
+		"https://www.youtube.com/*/community*"
+	  ],
+	  "js": ["content.js"],
+	  "run_at": "document_end"
+	}
+  ],
+
+  "permissions": [
+	"https://www.youtube.com/watch*",
+	"https://www.youtube.com/shorts*",
+	"https://www.youtube.com/*/community*"
+  ],
+
+  "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Ultimate-Comment-Section-Enhancer",
+
+  "browser_specific_settings": {
+	"gecko": {
+	  "strict_min_version": "58.0"
+	}
+  }
+}
