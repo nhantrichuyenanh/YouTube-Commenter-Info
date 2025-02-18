@@ -1,5 +1,5 @@
 # YouTube™ Ultimate Comment Section Enhancer
-https://addons.mozilla.org/firefox/addon/youtube-comment-enhancer/
+https://addons.mozilla.org/firefox/addon/yt-ult-comment-enhancer/
 
 🚀 Features:
 
