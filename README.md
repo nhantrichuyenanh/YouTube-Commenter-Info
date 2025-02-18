@@ -13,7 +13,7 @@ https://addons.mozilla.org/firefox/addon/youtube-comment-enhancer/
 #
 *   **Automatically hides info box(es) if data is unavailable.**
 *   **Sorts info boxes into 3 columns for readability:**
-    *   **Left:** Subscriber Count, Location, and Creation Date
+    *   **Left:** Subscriber Count, Location, Creation Date
     *   **Middle:** Total Videos, Latest Video's Views and Upload Date
     *   **Right:** Description and Link Indicator, /about Redirector
 *   **Updates dynamically, even if comment section is set to Newest.**
