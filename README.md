@@ -16,3 +16,4 @@ https://addons.mozilla.org/firefox/addon/yt-ult-comment-enhancer/
     *   **Middle:** Total Videos, Latest Video's Views and Upload Date
     *   **Right:** Description and Link
 *   **Updates dynamically, even if comment section is set to Newest.**
+*   **Supports multiple languages**
