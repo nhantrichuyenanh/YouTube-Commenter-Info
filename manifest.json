@@ -2,9 +2,9 @@
   "manifest_version": 2,
   "name": "YouTube Ultimate Comment Enhancer",
   "short_name": "YT Ult Comment Enhancer",
-  "version": "1.4.0.5",
-  "description": "Subscriber Count \u2022 Location \u2022 Creation Date \u2022 Total Videos \u2022 Latest Video's View Count & Last Uploaded \u2022 Description \u2022 Link",
-  "author": "Nh\u00e2n Tr\u00ed",
+  "version": "1.4.2",
+  "description": "Subscriber Count • Location • Creation Date • Total Videos • Latest Video's View Count & Last Uploaded • Description • Link",
+  "author": "Nhân Trí",
   "content_scripts": [
     {
       "matches": [
