@@ -1,10 +1,9 @@
 # YouTube™ Ultimate Comment Section Enhancer
-https://addons.mozilla.org/firefox/addon/yt-ult-comment-enhancer/
 
 🚀 Features:
 
 *   **Subscriber Count** - See how many subscribers the commenter has.
-*   **Channel Location** - Shows the country of the commenter (if they set their location in their about page).
+*   **Channel Location** - Shows the country of the commenter (if they set their location in their /about page).
 *   **Channel Creation Date** - Indicates when the commenter created their YouTube channel.
 *   **Total Videos** - Displays the total number of videos uploaded to the commenter's YouTube channel.
 *   **Latest Video's Views and Upload Date** - Reveals the amount of views and upload date of the commenter's latest public video.
@@ -14,6 +13,5 @@ https://addons.mozilla.org/firefox/addon/yt-ult-comment-enhancer/
 *   **Sorts info boxes into 3 columns for readability:**
     *   **Left:** Subscriber Count, Location, Creation Date
     *   **Middle:** Total Videos, Latest Video's Views and Upload Date
-    *   **Right:** Description and Link
+    *   **Right:** Description, Link, Business Email
 *   **Updates dynamically, even if comment section is set to Newest.**
-*   **Supports multiple languages.**
