@@ -1,6 +1,7 @@
 # YouTube™ Ultimate Comment Section Enhancer
 
 ℹ️ https://addons.mozilla.org/en-US/firefox/addon/yt-ult-comment-enhancer/
+
 🚀 Features:
 
 *   **Subscriber Count** - See how many subscribers the commenter has.
