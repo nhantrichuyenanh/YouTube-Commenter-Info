@@ -1,40 +1,42 @@
-{
-  "manifest_version": 2,
-  "name": "YouTube Ultimate Comment Enhancer",
-  "short_name": "YT Ult Comment Enhancer",
-  "version": "1.4.2",
-  "description": "Subscriber Count • Location • Creation Date • Total Videos • Latest Video's View Count & Last Uploaded • Description • Link",
-  "author": "Nhân Trí",
-  "content_scripts": [
     {
-      "matches": [
-        "https://www.youtube.com/*"
+      "manifest_version": 3,
+      "name": "YouTube Ultimate Comment Enhancer",
+      "short_name": "YT Ult Comment Enhancer",
+      "version": "1.4.5",
+      "description": "Subscriber Count • Location • Creation Date • Total Videos • Latest Video's View Count & Last Uploaded • Description • Link • Business Email",
+      "author": "Nhân Trí",
+      "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Ultimate-Comment-Section-Enhancer",
+      "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+      },
+      "content_scripts": [
+        {
+          "matches": [
+            "https://www.youtube.com/watch*",
+            "https://www.youtube.com/shorts/*",
+            "https://www.youtube.com/channel/*/community*"
+          ],
+          "js": [
+            "content.js"
+          ],
+          "all_frames": false,
+          "run_at": "document_end"
+        }
       ],
-      "js": [
-        "content.js"
+      "host_permissions": [
+        "https://www.youtube.com/watch*",
+        "https://www.youtube.com/shorts/*",
+        "https://www.youtube.com/channel/*/community*"
       ],
-      "all_frames": false,
-      "run_at": "document_end"
+      "icons": {
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "64": "icons/icon64.png",
+        "128": "icons/icon128.png"
+      },
+      "browser_specific_settings": {
+        "gecko": {
+          "id": "{a271ed8b-79b5-4c55-88d4-7ddeb399fb26}"
+        }
+      }
     }
-  ],
-  "permissions": [
-    "https://www.youtube.com/*"
-  ],
-  "icons": {
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "64": "icons/icon64.png",
-    "128": "icons/icon128.png"
-  },
-  "web_accessible_resources": [
-    "icons/icon32.png",
-    "icons/icon48.png",
-    "icons/icon64.png",
-    "icons/icon128.png"
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "{a271ed8b-79b5-4c55-88d4-7ddeb399fb26}"
-    }
-  }
-}
