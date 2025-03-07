@@ -364,7 +364,7 @@
         // title
         const titleRegex = /"title":\{"runs":\[\{"text":"([^"]+)"/;
         const titleMatch = text.match(titleRegex);
-        const title = titleMatch ? titleMatch[1] : 'N/A';
+        const title = titleMatch ? JSON.parse('"' + titleMatch[1] + '"') : 'N/A';
 
         // published time
         const publishedTimeRegex = /"publishedTimeText":\{"simpleText":"([^"]+)"\}/;
