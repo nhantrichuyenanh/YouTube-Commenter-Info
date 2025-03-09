@@ -1,42 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Ultimate Comment Enhancer",
+  "short_name": "YT Ult Comment Enhancer",
+  "version": "1.5.5",
+  "description": "Subscribe Count • Location • Creation Date • Total Videos • Latest Video's View Count & Last Uploaded • Description • Link • Business Email",
+  "author": "Nhân Trí",
+  "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Ultimate-Comment-Section-Enhancer",
+  "content_scripts": [
     {
-      "manifest_version": 3,
-      "name": "YouTube Ultimate Comment Enhancer",
-      "short_name": "YT Ult Comment Enhancer",
-      "version": "1.4.9",
-      "description": "Subscriber Count • Location • Creation Date • Total Videos • Latest Video's View Count & Last Uploaded • Description • Link • Business Email",
-      "author": "Nhân Trí",
-      "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Ultimate-Comment-Section-Enhancer",
-      "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'"
-      },
-      "content_scripts": [
-        {
-          "matches": [
-            "https://www.youtube.com/watch*",
-            "https://www.youtube.com/shorts/*",
-            "https://www.youtube.com/channel/*/community*"
-          ],
-          "js": [
-            "content.js"
-          ],
-          "all_frames": false,
-          "run_at": "document_end"
-        }
+      "matches": [
+        "https://www.youtube.com/*"
       ],
-      "host_permissions": [
-        "https://www.youtube.com/watch*",
-        "https://www.youtube.com/shorts/*",
-        "https://www.youtube.com/channel/*/community*"
+      "js": [
+        "content.js"
       ],
-      "icons": {
-        "32": "icons/icon32.png",
-        "48": "icons/icon48.png",
-        "64": "icons/icon64.png",
-        "128": "icons/icon128.png"
-      },
-      "browser_specific_settings": {
-        "gecko": {
-          "id": "{a271ed8b-79b5-4c55-88d4-7ddeb399fb26}"
-        }
-      }
+      "all_frames": false,
+      "run_at": "document_end"
     }
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/watch?*",
+    "https://www.youtube.com/shorts/*",
+    "https://www.youtube.com/channel/*/community*"
+  ],
+  "icons": {
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "64": "icons/icon64.png",
+    "128": "icons/icon128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{a271ed8b-79b5-4c55-88d4-7ddeb399fb26}",
+      "strict_min_version": "109.0"
+    }
+  }
+}
