@@ -18,7 +18,6 @@
 *   **Description** - Hover over.
 *   **External Links** - Click on it.
 *   **Business Email** - Click on it to be redirected.
-*   
 #
 *   **Automatically hides info box(es) if data is unavailable.**
 *   **Sorts info boxes into 3 columns for readability:**
