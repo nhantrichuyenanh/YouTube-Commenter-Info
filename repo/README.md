@@ -4,17 +4,26 @@
 
 🚀 Features:
 
-*   **Subscriber Count** - See how many subscribers the commenter has.
-*   **Channel Location** - Shows the country of the commenter (if they set their location in their /about page).
-*   **Channel Creation Date** - Indicates when the commenter created their YouTube channel.
-*   **Total Videos** - Displays the total number of videos uploaded to the commenter's YouTube channel.
-*   **Total View Count** - 
-*   **Latest Video's Views and Upload Date** - Reveals the amount of views and upload date of the commenter's latest public video.
-*   **Description and Link** - If the commenter's Description and/or Link is non-empty, the indicator will appear.
+*   **Subscriber Count**
+*   **Channel Location**
+*   **Joined Date**
+*   **Total Videos**
+*   **Total View Count**
+*   **Latest Video** - Click on it to be redirected. Hover over to see:
+   *   **View Count**
+   *   **Length**
+   *   **Thumbnail**
+   *   **Title**
+*   **Playlists** - Click on it.
+*   **Description** - Hover over.
+*   **External Links** - Click on it.
+*   **Business Email** - Click on it to be redirected.
+*   
 #
 *   **Automatically hides info box(es) if data is unavailable.**
 *   **Sorts info boxes into 3 columns for readability:**
-    *   **Left:** Subscriber Count, Location, Creation Date
-    *   **Middle:** Total Videos, Latest Video's Views and Upload Date
-    *   **Right:** Description, Link, Business Email
-*   **Updates dynamically, even if comment section is set to Newest.**
+    *   **Left:** Subscriber Count, Location, Joined Date
+    *   **Middle:** Total Videos, Total View Count, Latest Video, Playlists
+    *   **Right:** Description, External Links, Business Email
+*   **Updates dynamically** - scrolling down, checking Replies, comment section set to Newest
+*   **[NEW] Compact** - new options menu in about:addons
