@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* LIGHT MODE */
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #ffffff;
+            color: #15141a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #f9f9f9;
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            width: 320px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 1rem;
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            border-radius: 4px;
+            margin-bottom: 12px;
+            background: #fff;
+            color: #000;
+        }
+
+        .info {
+            font-size: 0.8rem;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        /* DARK MODE  */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #23222b;
+                color: #fbfbfe;
+            }
+
+            .container {
+                background: #1c1b22;
+                border: 0.5px solid #4e4d54;
+            }
+
+            select {
+                background: #23222b;
+                color: #fbfbfe;
+                border: 1px solid #4e4d54;
+            }
+
+            .info {
+                color: #fbfbfe;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Script Options</h1>
+        <select id="scriptSelect">
+            <option value="default">Default</option>
+            <option value="compact">Compact</option>
+        </select>
+        <div class="info">
+            Refresh the page after changing options.<br>
+            Your selection is automatically saved.
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+
+</html>
