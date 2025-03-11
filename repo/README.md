@@ -8,6 +8,7 @@
 *   **Channel Location** - Shows the country of the commenter (if they set their location in their /about page).
 *   **Channel Creation Date** - Indicates when the commenter created their YouTube channel.
 *   **Total Videos** - Displays the total number of videos uploaded to the commenter's YouTube channel.
+*   **Total View Count** - 
 *   **Latest Video's Views and Upload Date** - Reveals the amount of views and upload date of the commenter's latest public video.
 *   **Description and Link** - If the commenter's Description and/or Link is non-empty, the indicator will appear.
 #
