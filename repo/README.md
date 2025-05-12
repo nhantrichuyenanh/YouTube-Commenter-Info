@@ -9,7 +9,7 @@
 *   **Joined Date**
 *   **Total Videos**
 *   **Total View Count**
-*   **Latest Video** - Click on it to be redirected. Hover over to see:
+*   **Latest Video** - Click on it to be redirected. Hover over to see.
    *   **View Count**
    *   **Length**
    *   **Thumbnail**
