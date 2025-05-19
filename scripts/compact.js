@@ -377,21 +377,35 @@
    * @param {string} localizedPlaylistWord
    * @returns {HTMLElement|null}
    */
-  function createPlaylistsBox(playlists, localizedPlaylistWord) {
+  function createPlaylistsBox(playlists, localizedPlaylistWord, channelUrl) {
     if (!playlists || playlists.length === 0) return null;
-
+  
+    // container for both the playlist‐count box and redirect button
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.gap = '4px';
+    container.style.alignItems = 'center';
+  
+    // main playlists box
     const box = document.createElement('div');
     box.className = 'yt-enhanced-info-item';
     box.textContent = '𝄞 ' + playlists.length + ' ' + localizedPlaylistWord;
     styleInfoBox(box);
     box.style.cursor = 'pointer';
-
     box.addEventListener('click', (e) => {
       e.preventDefault();
       displayPlaylistsPopup(playlists, box);
     });
-
-    return box;
+    container.appendChild(box);
+  
+    // redirect button if 2+ const playlistsData
+    if (playlists.length >= 2) {
+      const redirectButton = createLinkBox('🎙', channelUrl + '/playlists');
+      redirectButton.style.cursor = 'pointer';
+      container.appendChild(redirectButton);
+    }
+  
+    return container;
   }
 
   /**
@@ -727,7 +741,7 @@
       middleColumn.appendChild(latestVideoBox);
     }
     if (playlistsData && playlistsData.playlists && playlistsData.playlists.length > 0) {
-      const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord);
+      const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord, channelUrl);
       if (playlistsBox) middleColumn.appendChild(playlistsBox);
     }
 

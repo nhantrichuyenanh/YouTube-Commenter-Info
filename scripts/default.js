@@ -36,7 +36,7 @@
     tooltip.style.display = 'none';
     tooltip.style.boxShadow = BOX_SHADOW;
     applyAnimationStyles(tooltip);
-    tooltip.textContent = text.replace(/\\n/g, '\n').replace(/\\"/g, '"');
+    tooltip.textContent = text.replace(/\n/g, '\n').replace(/\\"/g, '"');
     return tooltip;
   }
 
@@ -179,7 +179,6 @@
       row.style.display = 'table-row';
 
       const leftColumn = createPopupCell(item.title || '', 'left');
-
       const middleColumn = createPopupCell('', 'center');
       if (item.icon) {
         const img = document.createElement('img');
@@ -214,21 +213,13 @@
     });
 
     let maxLeftWidth = 0, maxMiddleWidth = 0, maxRightWidth = 0;
-    const leftColumns = popup.querySelectorAll('.left-cell, div[style*="text-align: left"]');
+    const leftColumns = popup.querySelectorAll('div[style*="text-align: left"]');
     const middleColumns = popup.querySelectorAll('div[style*="text-align: center"]');
-    const rightColumns = popup.querySelectorAll('.right-cell, div[style*="text-align: left"]');
+    const rightColumns = popup.querySelectorAll('div[style*="vertical-align: middle"]');
 
-    leftColumns.forEach(cell => {
-      maxLeftWidth = Math.max(maxLeftWidth, cell.offsetWidth);
-    });
-
-    middleColumns.forEach(cell => {
-      maxMiddleWidth = Math.max(maxMiddleWidth, cell.offsetWidth);
-    });
-
-    rightColumns.forEach(cell => {
-      maxRightWidth = Math.max(maxRightWidth, cell.offsetWidth);
-    });
+    leftColumns.forEach(cell => { maxLeftWidth = Math.max(maxLeftWidth, cell.offsetWidth); });
+    middleColumns.forEach(cell => { maxMiddleWidth = Math.max(maxMiddleWidth, cell.offsetWidth); });
+    rightColumns.forEach(cell => { maxRightWidth = Math.max(maxRightWidth, cell.offsetWidth); });
 
     leftColumns.forEach(cell => { cell.style.width = maxLeftWidth + 'px'; });
     middleColumns.forEach(cell => { cell.style.width = maxMiddleWidth + 'px'; });
@@ -364,17 +355,9 @@
     const videosColumns = popup.querySelectorAll('div[style*="text-align: center"]');
     const thumbnailColumns = popup.querySelectorAll('div[style*="vertical-align: middle"]');
 
-    titleColumns.forEach(cell => {
-      maxTitleWidth = Math.max(maxTitleWidth, cell.offsetWidth);
-    });
-
-    videosColumns.forEach(cell => {
-      maxVideosWidth = Math.max(maxVideosWidth, cell.offsetWidth);
-    });
-
-    thumbnailColumns.forEach(cell => {
-      maxThumbnailWidth = Math.max(maxThumbnailWidth, cell.offsetWidth);
-    });
+    titleColumns.forEach(cell => { maxTitleWidth = Math.max(maxTitleWidth, cell.offsetWidth); });
+    videosColumns.forEach(cell => { maxVideosWidth = Math.max(maxVideosWidth, cell.offsetWidth); });
+    thumbnailColumns.forEach(cell => { maxThumbnailWidth = Math.max(maxThumbnailWidth, cell.offsetWidth); });
 
     titleColumns.forEach(cell => { cell.style.width = maxTitleWidth + 'px'; });
     videosColumns.forEach(cell => { cell.style.width = maxVideosWidth + 'px'; });
@@ -406,21 +389,37 @@
     document.addEventListener('click', onClickOutside);
   }
 
-  function createPlaylistsBox(playlists, localizedPlaylistWord) {
+  function createPlaylistsBox(playlists, localizedPlaylistWord, channelUrl) {
     if (!playlists || playlists.length === 0) return null;
-
+  
+    // container for both buttons
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.gap = '4px';
+    container.style.alignItems = 'center';
+  
+    // playlist box
     const box = document.createElement('div');
     box.className = 'yt-enhanced-info-item';
     box.textContent = '𝄞 ' + playlists.length + ' ' + localizedPlaylistWord;
     styleInfoBox(box);
     box.style.cursor = 'pointer';
-
+  
     box.addEventListener('click', (e) => {
       e.preventDefault();
       displayPlaylistsPopup(playlists, box);
     });
-
-    return box;
+  
+    container.appendChild(box);
+  
+    // redirect button if 2+ playlists
+    if (playlists.length >= 2) {
+      const redirectButton = createLinkBox('🎙', channelUrl + '/playlists');
+      redirectButton.style.cursor = 'pointer';
+      container.appendChild(redirectButton);
+    }
+  
+    return container;
   }
 
   /**
@@ -450,7 +449,7 @@
     // fetch and add playlists box with localized word
     const playlistsData = await fetchPlaylistsData(channelUrl);
     if (playlistsData.playlists && playlistsData.playlists.length > 0) {
-      const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord);
+      const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord, channelUrl);
       if (playlistsBox) midCol.appendChild(playlistsBox);
     }
 
@@ -460,7 +459,7 @@
       updatedLatestVideoInfo.publishedTime !== 'N/A' &&
       updatedLatestVideoInfo.length !== 'N/A' &&
       updatedLatestVideoInfo.videoViewCount !== 'N/A') {
-      const updatedLatestVideoBox = createLatestVideoBox(updatedLatestVideoInfo, channelUrl);
+      const updatedLatestVideoBox = createLatestVideoBox(updatedLatestVideoInfo);
       midCol.appendChild(updatedLatestVideoBox);
     }
 
@@ -585,11 +584,11 @@
     const titleMatch = text.match(titleRegex);
     const title = titleMatch ? titleMatch[1] : 'N/A';
 
-    const publishedTimeRegex = /"publishedTimeText":\{"simpleText":"([^"]+)"\}/;
+    const publishedTimeRegex = /"publishedTimeText":\{"simpleText":"([^"]+)"/;
     const publishedTimeMatch = text.match(publishedTimeRegex);
     const publishedTime = publishedTimeMatch ? publishedTimeMatch[1] : 'N/A';
 
-    const lengthViewRegex = /"lengthText":\{"accessibility":\{"accessibilityData":\{"label":"[^"]+"\}\},"simpleText":"([^"]+)"\},"viewCountText":\{"simpleText":"([^"]+)"\}/;
+    const lengthViewRegex = /"lengthText":\{"accessibility":\{"accessibilityData":\{"label":"[^"]+"\}\},"simpleText":"([^"]+)"\},"viewCountText":\{"simpleText":"([^"]+)"/;
     const lengthViewMatch = text.match(lengthViewRegex);
     const lengthText = lengthViewMatch ? lengthViewMatch[1] : 'N/A';
     const videoViewCount = lengthViewMatch ? lengthViewMatch[2] : 'N/A';
@@ -647,7 +646,7 @@
         topRow.style.gap = GAP;
         topRow.style.marginBottom = '4px';
 
-        const viewsCell = (function () {
+        const viewsCell = (() => {
           const cell = document.createElement('div');
           cell.style.flex = '1';
           cell.style.display = 'flex';
@@ -661,7 +660,7 @@
           return cell;
         })();
 
-        const lengthCell = (function () {
+        const lengthCell = (() => {
           const cell = document.createElement('div');
           cell.style.flex = '1';
           cell.style.display = 'flex';
@@ -677,6 +676,7 @@
 
         topRow.appendChild(viewsCell);
         topRow.appendChild(lengthCell);
+
         const middleRow = document.createElement('div');
         middleRow.style.display = 'flex';
         middleRow.style.justifyContent = 'center';
@@ -727,14 +727,19 @@
     });
 
     box.addEventListener('mousemove', (e) => {
-      if (tooltip) { positionTooltip(e, tooltip); }
+      if (tooltip) positionTooltip(e, tooltip);
     });
 
     box.addEventListener('mouseout', () => {
       if (tooltip) {
         tooltip.style.transform = 'translateY(-10px)';
         tooltip.style.opacity = '0';
-        setTimeout(() => { if (tooltip) { tooltip.remove(); tooltip = null; } }, 300);
+        setTimeout(() => {
+          if (tooltip) {
+            tooltip.remove();
+            tooltip = null;
+          }
+        }, 300);
       }
     });
 
@@ -744,6 +749,7 @@
         window.open('https://www.youtube.com/watch?v=' + latestVideoInfo.videoId, '_blank');
       }
     });
+
     return box;
   }
 
@@ -797,18 +803,19 @@
     if (viewBox) middleColumn.appendChild(viewBox);
 
     let latestVideoInfo = await getLatestVideoInfo(channelUrl);
-    if (latestVideoInfo && latestVideoInfo.title !== 'N/A' &&
-      latestVideoInfo.publishedTime !== 'N/A' &&
-      latestVideoInfo.length !== 'N/A' &&
-      latestVideoInfo.videoViewCount !== 'N/A') {
-      const latestVideoBox = createLatestVideoBox(latestVideoInfo, channelUrl);
+    if (latestVideoInfo &&
+        latestVideoInfo.title !== 'N/A' &&
+        latestVideoInfo.publishedTime !== 'N/A' &&
+        latestVideoInfo.length !== 'N/A' &&
+        latestVideoInfo.videoViewCount !== 'N/A') {
+      const latestVideoBox = createLatestVideoBox(latestVideoInfo);
       middleColumn.appendChild(latestVideoBox);
     }
 
     // fetch and add playlists box with localized word
     const playlistsData = await fetchPlaylistsData(channelUrl);
     if (playlistsData.playlists && playlistsData.playlists.length > 0) {
-      const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord);
+      const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord, channelUrl);
       if (playlistsBox) middleColumn.appendChild(playlistsBox);
     }
 
@@ -816,6 +823,7 @@
     rightColumn.style.display = 'flex';
     rightColumn.style.flexDirection = 'column';
     rightColumn.style.gap = '4px';
+
     if (channelInfo.hasDescription) {
       const descBox = createInfoBox('🖍', ' ');
       attachDescriptionTooltip(descBox, channelInfo.description);
