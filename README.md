@@ -1,7 +1,5 @@
 # YouTube™ Ultimate Comment Section Enhancer
 
-🔗 https://addons.mozilla.org/firefox/addon/yt-ult-comment-enhancer
-
 🚀 Features:
 
 *   **Subscriber Count**
@@ -25,4 +23,4 @@
     *   **Middle:** Total Videos, Total View Count, Latest Video, Playlists
     *   **Right:** Description, External Links, Business Email
 *   **Updates dynamically** - scrolling down, checking Replies, comment section set to Newest
-*   **[NEW] Compact** - new options menu in about:addons
+*   **Compact** - new options menu in about:addons
