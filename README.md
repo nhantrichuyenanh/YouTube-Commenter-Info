@@ -17,5 +17,5 @@ Features:
     - Channel Links: click to see links
     - Business Email: click on it to be redirected to the channel's about page
   - Compact: ⓘ to view all 3 columns
-- Automatically hides info box(es) if data is unavailable.
+- Automatically hides info box(es) if data is unavailable
 - Updates dynamically: scrolling down, checking replies, comment section set to newest
