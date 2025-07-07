@@ -18,4 +18,4 @@ Features:
       - Business Email<sup>click on it to be redirected to the channel's about page</sup>
   - Compact<sup>ⓘ to view all 3 columns</sup>
 - Automatically hides info box(es) if data is unavailable
-- Updates dynamically: scrolling down, checking replies, comment section set to newest
+- Updates dynamically<sub>scrolling down, checking replies, comment section set to newest</sup>
