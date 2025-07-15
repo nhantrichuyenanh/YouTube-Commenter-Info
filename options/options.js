@@ -1,10 +1,49 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const select = document.getElementById('scriptSelect');
-  browser.storage.local.get('scriptVariant').then(result => {
-    select.value = result.scriptVariant || 'default';
+// default settings
+const defaultSettings = {
+  subscriberCount: true,
+  location: true,
+  joinedDate: true,
+  totalVideos: true,
+  totalViewCount: true,
+  latestVideo: true,
+  playlists: true,
+  description: true,
+  externalLinks: true,
+  businessEmail: true
+};
+
+// load settings from storage
+function loadSettings() {
+  browser.storage.sync.get(defaultSettings).then((settings) => {
+    Object.keys(defaultSettings).forEach(key => {
+      const checkbox = document.getElementById(key);
+      if (checkbox) {
+        checkbox.checked = settings[key];
+      }
+    });
   });
-  
-  select.addEventListener('change', () => {
-    browser.storage.local.set({ scriptVariant: select.value });
+}
+
+// save settings to storage
+function saveSettings() {
+  const settings = {};
+  Object.keys(defaultSettings).forEach(key => {
+    const checkbox = document.getElementById(key);
+    if (checkbox) {
+      settings[key] = checkbox.checked;
+    }
+  });
+
+  browser.storage.sync.set(settings);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+
+  Object.keys(defaultSettings).forEach(key => {
+    const checkbox = document.getElementById(key);
+    if (checkbox) {
+      checkbox.addEventListener('change', saveSettings);
+    }
   });
 });

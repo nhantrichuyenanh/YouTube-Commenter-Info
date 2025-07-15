@@ -12,8 +12,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .container {
@@ -22,7 +24,8 @@
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             padding: 20px;
-            width: 320px;
+            width: 100%;
+            max-width: 400px;
             text-align: center;
         }
 
@@ -31,30 +34,46 @@
             font-size: 1.2rem;
         }
 
-        label {
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        select {
-            width: 100%;
-            padding: 8px;
-            font-size: 1rem;
-            border: 1px solid rgba(128, 128, 128, 0.2);
-            border-radius: 4px;
-            margin-bottom: 12px;
-            background: #fff;
-            color: #000;
-        }
-
         .info {
             font-size: 0.8rem;
             color: #000;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        /* DARK MODE  */
+        .checkbox-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin: 0;
+            flex: 1;
+        }
+
+        .checkbox-item .emoji {
+            margin-left: auto;
+            font-size: 1rem;
+        }
+
+        /* DARK MODE */
         @media (prefers-color-scheme: dark) {
             body {
                 background: #23222b;
@@ -66,29 +85,72 @@
                 border: 0.5px solid #4e4d54;
             }
 
-            select {
-                background: #23222b;
-                color: #fbfbfe;
-                border: 1px solid #4e4d54;
-            }
-
             .info {
                 color: #fbfbfe;
             }
+
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Script Options</h1>
-        <select id="scriptSelect">
-            <option value="default">Default</option>
-            <option value="compact">Compact</option>
-        </select>
+        <h1>Info Box Visibility</h1>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="subscriberCount" checked>
+                <label for="subscriberCount">Subscriber Count</label>
+                <span class="emoji">🕭</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="location" checked>
+                <label for="location">Location</label>
+                <span class="emoji">🗺</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="joinedDate" checked>
+                <label for="joinedDate">Joined Date</label>
+                <span class="emoji">🗓</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="totalVideos" checked>
+                <label for="totalVideos">Total Videos</label>
+                <span class="emoji">📽</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="totalViewCount" checked>
+                <label for="totalViewCount">Total View Count</label>
+                <span class="emoji">👁</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="latestVideo" checked>
+                <label for="latestVideo">Latest Video</label>
+                <span class="emoji">▷</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="playlists" checked>
+                <label for="playlists">Playlists</label>
+                <span class="emoji">𝄞</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="description" checked>
+                <label for="description">Description</label>
+                <span class="emoji">🖍</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="externalLinks" checked>
+                <label for="externalLinks">External Links</label>
+                <span class="emoji">🖇</span>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="businessEmail" checked>
+                <label for="businessEmail">Business Email</label>
+                <span class="emoji">✉︎</span>
+            </div>
+        </div>
         <div class="info">
             Refresh the page after changing options.<br>
-            Your selection is automatically saved.
+            Your selection is automatically saved.<br>
         </div>
     </div>
     <script src="options.js"></script>
