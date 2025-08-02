@@ -36,11 +36,7 @@
     el.style.opacity = '0';
   }
 
-  /**
-   * tooltip
-   * @param {string} text -> tooltip text
-   * @returns {HTMLElement} -> tooltip
-   */
+  // tooltip
   function createTooltip(text) {
     const tooltip = document.createElement('div');
     tooltip.style.background = GENERAL_BACKGROUND;
@@ -59,51 +55,11 @@
     return tooltip;
   }
 
-  /**
-   * tooltip positioning
-   * @param {MouseEvent} e -> mouse event
-   * @param {HTMLElement} tooltip -> tooltip positioning
-   */
   function positionTooltip(e, tooltip) {
     tooltip.style.left = (e.pageX + 10) + 'px';
     tooltip.style.top = (e.pageY + 10) + 'px';
   }
 
-  /**
-   * info box
-   * @param {string} icon -> symbol
-   * @param {string} text -> text
-   * @returns {HTMLElement|null}
-   */
-  function createInfoBox(icon, text) {
-    if (!text || text === 'N/A') return null;
-    const box = document.createElement('div');
-    box.className = 'yt-enhanced-info-item';
-    box.textContent = icon + ' ' + text;
-    styleInfoBox(box);
-    return box;
-  }
-
-  /**
-   * info box styling
-   * @param {HTMLElement} el -> styling
-   */
-  function styleInfoBox(el) {
-    el.style.background = GENERAL_BACKGROUND;
-    el.style.color = TEXT_COLOR;
-    el.style.padding = PADDING;
-    el.style.borderRadius = BORDER_RADIUS;
-    el.style.border = BORDER_STYLE;
-    el.style.fontSize = FONT_SIZE;
-    el.style.width = 'fit-content';
-    el.style.position = 'relative';
-  }
-
-  /**
-   * description tooltip
-   * @param {HTMLElement} element
-   * @param {string} descriptionText
-   */
   function attachDescriptionTooltip(element, descriptionText) {
     if (!descriptionText) return;
     const tooltip = createTooltip(descriptionText);
@@ -129,12 +85,27 @@
     });
   }
 
-  /**
-   * link box
-   * @param {string} iconText -> symbol
-   * @param {string|null} aboutUrl -> URL
-   * @returns {HTMLElement}
-   */
+  // info box
+  function createInfoBox(icon, text) {
+    if (!text || text === 'N/A') return null;
+    const box = document.createElement('div');
+    box.className = 'yt-enhanced-info-item';
+    box.textContent = icon + ' ' + text;
+    styleInfoBox(box);
+    return box;
+  }
+  
+  function styleInfoBox(el) {
+    el.style.background = GENERAL_BACKGROUND;
+    el.style.color = TEXT_COLOR;
+    el.style.padding = PADDING;
+    el.style.borderRadius = BORDER_RADIUS;
+    el.style.border = BORDER_STYLE;
+    el.style.fontSize = FONT_SIZE;
+    el.style.width = 'fit-content';
+    el.style.position = 'relative';
+  }
+
   function createLinkBox(iconText, aboutUrl) {
     const link = document.createElement('a');
     link.className = 'yt-enhanced-info-item';
@@ -147,13 +118,7 @@
     styleInfoBox(link);
     return link;
   }
-
-  /**
-   * link box dropdown cell
-   * @param {string} text -> cell text content
-   * @param {string} align -> text alignment
-   * @returns {HTMLElement}
-   */
+  
   function createPopupCell(text, align) {
     const cell = document.createElement('div');
     cell.style.display = 'table-cell';
@@ -167,11 +132,6 @@
     return cell;
   }
 
-  /**
-   * link box tooltip
-   * @param {Array} links
-   * @param {HTMLElement} anchorEl
-   */
   function displayExternalLinksPopup(links, anchorEl) {
     let popup = document.createElement('div');
     popup.className = 'yt-enhanced-info-popup';
@@ -411,13 +371,11 @@
     function createPlaylistsBox(playlists, localizedPlaylistWord, channelUrl) {
     if (!playlists || playlists.length === 0) return null;
 
-    // container for both buttons
     const container = document.createElement('div');
     container.style.display = 'flex';
     container.style.gap = '4px';
     container.style.alignItems = 'center';
 
-    // playlist box
     const box = document.createElement('div');
     box.className = 'yt-enhanced-info-item';
     box.textContent = '𝄞 ' + playlists.length + ' ' + localizedPlaylistWord;
@@ -466,14 +424,6 @@
     return container;
   }
 
-  /**
-   * NEW: added visibility checks to all columns
-   * @param {Object} updatedInfo
-   * @param {HTMLElement} leftCol
-   * @param {HTMLElement} midCol
-   * @param {HTMLElement} rightCol
-   * @param {string} channelUrl
-   */
   async function updateInfoColumns(updatedInfo, leftCol, midCol, rightCol, channelUrl) {
     leftCol.innerHTML = '';
     midCol.innerHTML = '';
@@ -503,7 +453,7 @@
       if (updatedViewBox) midCol.appendChild(updatedViewBox);
     }
 
-    // fetch and add playlists box with localized word
+    // playlists
     if (userSettings.playlists) {
       const playlistsData = await fetchPlaylistsData(channelUrl);
       if (playlistsData.playlists && playlistsData.playlists.length > 0) {
@@ -547,12 +497,7 @@
       rightCol.appendChild(updatedEmailBox);
     }
   }
-
-  /**
-   * /about fetcher
-   * @param {string} channelUrl
-   * @returns {Object}
-   */
+  
   const getChannelInfo = async (channelUrl) => {
     const response = await fetch(channelUrl + '/about');
     const text = await response.text();
@@ -633,11 +578,6 @@
     };
   };
 
-  /**
-   * /video fetcher
-   * @param {string} channelUrl
-   * @returns {Object}
-   */
   const getLatestVideoInfo = async (channelUrl) => {
     const response = await fetch(channelUrl + '/videos');
     const text = await response.text();
@@ -673,11 +613,6 @@
     };
   };
 
-  /**
-   * latest video
-   * @param {Object} latestVideoInfo
-   * @returns {HTMLElement}
-   */
   function createLatestVideoBox(latestVideoInfo) {
     const box = document.createElement('div');
     box.className = 'yt-enhanced-info-item';
@@ -814,9 +749,6 @@
 
     return box;
   }
-  /**
-   * @param {HTMLElement} commentElement
-   */
 
   const addChannelInfo = async (commentElement) => {
     const channelUrlLookup = 'div#header-author a';
@@ -843,7 +775,6 @@
     infoContainer.style.width = '100%';
     infoContainer.style.maxWidth = '800px';
 
-    // Create columns
     const leftColumn = document.createElement('div');
     leftColumn.style.display = 'flex';
     leftColumn.style.flexDirection = 'column';
@@ -859,7 +790,7 @@
     rightColumn.style.flexDirection = 'column';
     rightColumn.style.gap = '4px';
 
-    // Left column - populate based on visibility settings
+    // left column
     if (userSettings.subscriberCount) {
       const subBox = createInfoBox('🕭', channelInfo.subscriberCount);
       if (subBox) leftColumn.appendChild(subBox);
@@ -875,7 +806,7 @@
       if (joinedBox) leftColumn.appendChild(joinedBox);
     }
 
-    // Middle column - populate based on visibility settings
+    // middle column
     if (userSettings.totalVideos) {
       const videoBox = createInfoBox('📽', channelInfo.videoCount);
       if (videoBox) middleColumn.appendChild(videoBox);
@@ -886,7 +817,7 @@
       if (viewBox) middleColumn.appendChild(viewBox);
     }
 
-    // Latest video info
+    // latest video
     if (userSettings.latestVideo) {
       let latestVideoInfo = await getLatestVideoInfo(channelUrl);
       if (latestVideoInfo &&
@@ -899,7 +830,7 @@
       }
     }
 
-    // Playlists
+    // playlists
     if (userSettings.playlists) {
       const playlistsData = await fetchPlaylistsData(channelUrl);
       if (playlistsData.playlists && playlistsData.playlists.length > 0) {
@@ -908,7 +839,7 @@
       }
     }
 
-    // Right column - populate based on visibility settings
+    // right column
     if (userSettings.description && channelInfo.hasDescription) {
       const descBox = createInfoBox('🖍', ' ');
       attachDescriptionTooltip(descBox, channelInfo.description);
@@ -931,18 +862,15 @@
       rightColumn.appendChild(emailBox);
     }
 
-    // Only append columns that have content
     if (leftColumn.children.length > 0) infoContainer.appendChild(leftColumn);
     if (middleColumn.children.length > 0) infoContainer.appendChild(middleColumn);
     if (rightColumn.children.length > 0) infoContainer.appendChild(rightColumn);
 
-    // Insert the info container if it has any content
     const commentContent = commentElement.querySelector('#content-text');
     if (commentContent && commentContent.parentElement && infoContainer.children.length > 0) {
       commentContent.parentElement.insertBefore(infoContainer, commentContent);
     }
 
-    // Set up observer for dynamic updates
     const observer = new MutationObserver(mutationsList => {
       mutationsList.forEach(async mutation => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'href') {
@@ -994,10 +922,8 @@
       });
     });
   });
-
   commentObserver.observe(
     document.querySelector('ytd-app'),
     { childList: true, subtree: true }
   );
-
 })();
