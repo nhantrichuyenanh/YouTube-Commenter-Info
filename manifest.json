@@ -8,12 +8,8 @@
   "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Commenter-Info",
   "content_scripts": [
     {
-      "matches": [
-        "https://www.youtube.com/*"
-      ],
-      "js": [
-        "content.js"
-      ],
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"],
       "all_frames": false,
       "run_at": "document_end"
     }
