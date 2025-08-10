@@ -8,11 +8,11 @@ Features:
 - Column 2:
   - Total Videos
   - Total View Count
-  - Latest Video<sup>click to be redirected, hover over to see: View Count, Length, Thumbnail, and Title</sup>
+  - Latest Video<sup>click to be redirected, hover over to see: **View Count, Length, Thumbnail, and Title**</sup>
   - Playlists Count and 🎙<sup>click to view playlists and be redirected to the channel's playlists</sup>
 - Column 3:
   - Description<sup>hover over</sup>
-  - Channel Links<sup>click to see links: Title and Icon</sup>
+  - Channel Links<sup>click to see links: **Title and Icon**</sup>
   - Business Email<sup>click on it to be redirected to the channel's about page</sup>
 - Hide info boxes in the options menu to reduce visual clutter
 - Automatically hides info box(es) if data is unavailable
