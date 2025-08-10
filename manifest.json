@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "YouTube Commenter Info",
   "short_name": "YT Commenter Info",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "description": "Subscribe Count • Location • Joined Date • Total Videos • Total View Count • Latest Video • Playlists • Description • Link • Business Email",
   "author": "Nhân Trí",
   "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Commenter-Info",
@@ -10,6 +10,7 @@
     {
       "matches": ["https://www.youtube.com/*"],
       "js": ["content.js"],
+      "css": ["styles.css"],
       "all_frames": false,
       "run_at": "document_end"
     }

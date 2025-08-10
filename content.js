@@ -14,7 +14,7 @@
   };
 
   // load user settings from storage
-  chrome.storage.sync.get(userSettings, (settings) => {
+  browser.storage.sync.get(userSettings, (settings) => {
       userSettings = settings;
     });
 
@@ -94,7 +94,7 @@
     styleInfoBox(box);
     return box;
   }
-  
+
   function styleInfoBox(el) {
     el.style.background = GENERAL_BACKGROUND;
     el.style.color = TEXT_COLOR;
@@ -118,7 +118,7 @@
     styleInfoBox(link);
     return link;
   }
-  
+
   function createPopupCell(text, align) {
     const cell = document.createElement('div');
     cell.style.display = 'table-cell';
@@ -157,37 +157,29 @@
       const row = document.createElement('div');
       row.style.display = 'table-row';
 
+      // title
       const leftColumn = createPopupCell(item.title || '', 'left');
+
+      // logo
       const middleColumn = createPopupCell('', 'center');
       if (item.icon) {
         const img = document.createElement('img');
         img.src = item.icon;
         img.style.width = '16px';
         img.style.height = '16px';
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', () => {
+          window.open(linkStr, '_blank', 'noopener');
+        });
         middleColumn.appendChild(img);
       }
 
-      const rightColumn = document.createElement('div');
-      rightColumn.style.display = 'table-cell';
-      rightColumn.style.padding = PADDING;
-      rightColumn.style.border = BORDER_STYLE;
-      rightColumn.style.borderRadius = BORDER_RADIUS;
-      rightColumn.style.fontSize = FONT_SIZE;
-      rightColumn.style.textAlign = 'left';
-      rightColumn.style.verticalAlign = 'middle';
-
-      const anchor = document.createElement('a');
-      anchor.href = linkStr;
-      anchor.target = '_blank';
-      anchor.rel = 'noopener noreferrer';
-      anchor.textContent = linkStr.replace(/^https:\/\/www\./, '');
-      anchor.style.color = '#3ea2f7';
-      anchor.style.textDecoration = 'none';
-      rightColumn.appendChild(anchor);
+      middleColumn.addEventListener('click', () => {
+        window.open(linkStr, '_blank', 'noopener');
+      });
 
       row.appendChild(leftColumn);
       row.appendChild(middleColumn);
-      row.appendChild(rightColumn);
       popup.appendChild(row);
     });
 
@@ -239,7 +231,7 @@
       const playlists = [];
 
       // playlist regex
-      const titleRegex = /"metadata":{"lockupMetadataViewModel":{"title":{"content":"([^"]+)"/g;
+      const titleRegex = /"metadata":\{"lockupMetadataViewModel":\{"title":\{"content":"((?:\\.|[^"\\])*)"/g;
       const urlRegex = /"url":"\/playlist\?list=([^"]+)"/g;
       const thumbnailRegex = /"thumbnailViewModel":{"image":{"sources":\[\{"url":"([^"]+)"/g;
       const videosRegex = /,"text":"([^"]+)"/g;
@@ -252,7 +244,7 @@
       for (let i = 0; i < titleMatches.length; i++) {
         if (titleMatches[i] && urlMatches[i] && thumbnailMatches[i] && videosMatches[i]) {
           playlists.push({
-            title: titleMatches[i][1],
+            title: decodeEscapedString(titleMatches[i][1]),
             url: 'https://www.youtube.com/playlist?list=' + urlMatches[i][1],
             thumbnail: thumbnailMatches[i][1],
             videos: videosMatches[i][1]
@@ -291,7 +283,6 @@
     playlists.forEach(playlist => {
       const row = document.createElement('div');
       row.style.display = 'table-row';
-      row.style.cursor = 'pointer';
 
       // right column: title
       const titleColumn = createPopupCell(playlist.title || '', 'left');
@@ -320,7 +311,7 @@
       }
 
       thumbnailColumn.addEventListener('click', () => {
-        window.open(playlist.url, '_blank');
+        window.open(playlist.url, '_blank', 'noopener');
       });
 
       row.appendChild(titleColumn);
@@ -497,7 +488,29 @@
       rightCol.appendChild(updatedEmailBox);
     }
   }
-  
+
+  // decodes sequences like \u0026 to & and \ to "
+  function decodeEscapedString(s) {
+    if (s === null || s === undefined) return s;
+    if (typeof s !== 'string') return s;
+
+    try {
+      const safe = '"' + s.replace(/"/g, '\\"').replace(/\r/g, '\\r').replace(/\n/g, '\\n') + '"';
+      return JSON.parse(safe);
+    } catch (e) {
+      try {
+        return s
+          .replace(/\\u([0-9a-fA-F]{4})/g, (m, code) => String.fromCharCode(parseInt(code, 16)))
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, '\\')
+          .replace(/\\n/g, '\n')
+          .replace(/\\r/g, '\r');
+      } catch (e2) {
+        return s;
+      }
+    }
+  }
+
   const getChannelInfo = async (channelUrl) => {
     const response = await fetch(channelUrl + '/about');
     const text = await response.text();
@@ -532,18 +545,17 @@
     const descMatch1 = text.match(descRegex1);
 
     if (descMatch1 && descMatch1[1].trim() !== "") {
-      try {
-        description = JSON.parse('"' + descMatch1[1] + '"');
-      } catch (e) {
-        description = descMatch1[1];
-      }
+      description = decodeEscapedString(descMatch1[1]);
     }
 
-    const externalLinkRegex = /"channelExternalLinkViewModel":\{"title":\{"content":"([^"]+)"\},"link":\{"content":"([^"]+)"/g;
+    const externalLinkRegex = /"channelExternalLinkViewModel":\{"title":\{"content":"((?:\\.|[^"\\])*)"\},"link":\{"content":"((?:\\.|[^"\\])*)"/g;
     let externalLinks = [];
     let match;
     while ((match = externalLinkRegex.exec(text)) !== null) {
-      externalLinks.push({ title: match[1].trim(), link: match[2].trim(), icon: null });
+      externalLinks.push({
+        title: decodeEscapedString(match[1]).trim(),
+        link: match[2].trim(),
+        icon: null });
     }
 
     const iconRegex = /"url":"([^"]+)","width":256,"height":256/g;
@@ -582,9 +594,9 @@
     const response = await fetch(channelUrl + '/videos');
     const text = await response.text();
 
-    const titleRegex = /"title":\{"runs":\[\{"text":"([^"]+)"/;
+    const titleRegex = /"title":\{"runs":\[\{"text":"((?:\\.|[^"\\])*)"/;
     const titleMatch = text.match(titleRegex);
-    const title = titleMatch ? titleMatch[1] : 'N/A';
+    const title = titleMatch ? decodeEscapedString(titleMatch[1]) : 'N/A';
 
     const publishedTimeRegex = /"publishedTimeText":\{"simpleText":"([^"]+)"/;
     const publishedTimeMatch = text.match(publishedTimeRegex);
@@ -688,11 +700,6 @@
           thumbnailImg.style.maxWidth = '150px';
           thumbnailImg.style.height = 'auto';
           thumbnailImg.style.cursor = 'pointer';
-          thumbnailImg.addEventListener('click', () => {
-            if (latestVideoInfo.videoId) {
-              window.open('https://www.youtube.com/watch?v=' + latestVideoInfo.videoId, '_blank');
-            }
-          });
           thumbnailImg.addEventListener('load', () => {
             tooltip.style.width = thumbnailImg.offsetWidth + 'px';
           });
@@ -743,7 +750,7 @@
     box.addEventListener('click', (e) => {
       e.preventDefault();
       if (latestVideoInfo.videoId) {
-        window.open('https://www.youtube.com/watch?v=' + latestVideoInfo.videoId, '_blank');
+        window.open('https://www.youtube.com/watch?v=' + latestVideoInfo.videoId, '_blank', 'noopener');
       }
     });
 
