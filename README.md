@@ -19,6 +19,8 @@ Features:
   - Channel Links<sup>click to see links: **Title and Icon**</sup>
   - Business Email<sup>click on it to be redirected to the channel's about page</sup>
   - `TODO: Shop`
+  - `TODO: Releases`
+  - `TODO: Podcasts`
 - Hide info boxes in the options menu to reduce visual clutter
 - Automatically hides info box(es) if data is unavailable
 - Updates dynamically<sup>scrolling down, checking replies, comment section set to newest</sup>
