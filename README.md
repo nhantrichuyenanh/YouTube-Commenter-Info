@@ -9,7 +9,7 @@ Features:
   - Total Videos
   - Total View Count
   - Playlists Count<sup>click to view playlists and their thumbnail to be directed</sup> and 🎙<sup>click to be redirected to the channel's playlists</sup>
-- Column 3: click to be redirected, hover over to see: **View Count, Length, Thumbnail, and Title**
+- Column 3: <sup>click to be redirected, hover over to see: **View Count, Length, Thumbnail, and Title**</sup>
   - Latest Video
   - Latest Shorts
   - Latest Livestream
