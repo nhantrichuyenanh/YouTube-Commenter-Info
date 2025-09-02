@@ -13,7 +13,7 @@ Features:
   - `Latest Video`
   - `Latest Shorts`
   - `Latest Livestream`
-  - `Latest Post <sup>click to be redirected</sup>`
+  - `Latest Post: click to be redirected`
 - Column 4:
   - Description<sup>hover over</sup>
   - Channel Links<sup>click to see links: **Title and Icon**</sup>
