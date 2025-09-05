@@ -21,6 +21,7 @@ Features:
   - `TODO: Shop`
   - `TODO: Releases`
   - `TODO: Podcasts`
+  - `TODO: Courses`
 - Hide info boxes in the options menu to reduce visual clutter
 - Automatically hides info box(es) if data is unavailable
 - Updates dynamically<sup>scrolling down, checking replies, comment section set to newest</sup>
