@@ -20,3 +20,5 @@ Features:
 - Hide info boxes in the options menu to reduce visual clutter
 - Automatically hides info box(es) if data is unavailable
 - Updates dynamically<sup>scrolling down, checking replies, comment section set to newest</sup>
+
+`TODO: redesign options menu to be a 2x2 grid, similar to YouTube™ Timestamps`
