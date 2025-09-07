@@ -6,6 +6,8 @@ const defaultSettings = {
   totalVideos: true,
   totalViewCount: true,
   latestVideo: true,
+  latestShorts: true,
+  latestLivestream: true,
   playlists: true,
   description: true,
   externalLinks: true,
@@ -46,4 +48,5 @@ document.addEventListener('DOMContentLoaded', () => {
       checkbox.addEventListener('change', saveSettings);
     }
   });
+
 });
