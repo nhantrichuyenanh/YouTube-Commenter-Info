@@ -5,6 +5,8 @@
     location: true,
     joinedDate: true,
     totalVideos: true,
+    latestShorts: true,
+    latestLivestream: true,
     totalViewCount: true,
     latestVideo: true,
     playlists: true,
@@ -984,4 +986,5 @@
     document.querySelector('ytd-app'),
     { childList: true, subtree: true }
   );
+
 })();
