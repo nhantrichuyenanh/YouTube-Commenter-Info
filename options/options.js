@@ -1,14 +1,21 @@
 // default settings
 const defaultSettings = {
+  // first column
   subscriberCount: true,
   location: true,
   joinedDate: true,
+
+  // second column
   totalVideos: true,
   totalViewCount: true,
+  playlists: true,
+
+  // third column
   latestVideo: true,
   latestShorts: true,
   latestLivestream: true,
-  playlists: true,
+
+  // fourth column
   description: true,
   externalLinks: true,
   businessEmail: true
@@ -48,5 +55,4 @@ document.addEventListener('DOMContentLoaded', () => {
       checkbox.addEventListener('change', saveSettings);
     }
   });
-
 });

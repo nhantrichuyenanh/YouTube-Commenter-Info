@@ -1,15 +1,22 @@
 (() => {
   // SETTINGS //
   let userSettings = {
+    // first column
     subscriberCount: true,
     location: true,
     joinedDate: true,
+
+    // second column
     totalVideos: true,
+    totalViewCount: true,
+    playlists: true,
+
+    // third column
+    latestVideo: true,
     latestShorts: true,
     latestLivestream: true,
-    totalViewCount: true,
-    latestVideo: true,
-    playlists: true,
+
+    // fourth column
     description: true,
     externalLinks: true,
     businessEmail: true
@@ -89,7 +96,7 @@
 
   // info box
   function createInfoBox(icon, text) {
-    if (!text || text === 'N/A') return null;
+    if (!text || text === null) return null;
     const box = document.createElement('div');
     box.className = 'yt-enhanced-info-item';
     box.textContent = icon + ' ' + text;
@@ -259,7 +266,6 @@
 
       return { playlists, localizedPlaylistWord };
     } catch (error) {
-      console.error("Error fetching playlists:", error);
       return { playlists: [], localizedPlaylistWord: "playlist" };
     }
   }
@@ -414,64 +420,81 @@
     return container;
   }
 
-  async function updateInfoColumns(updatedInfo, leftCol, midCol, rightCol, channelUrl) {
-    leftCol.innerHTML = '';
-    midCol.innerHTML = '';
-    rightCol.innerHTML = '';
+  async function updateInfoColumns(updatedInfo, firstCol, secondCol, thirdCol, fourthCol, channelUrl) {
+    firstCol.innerHTML = '';
+    secondCol.innerHTML = '';
+    thirdCol.innerHTML = '';
+    fourthCol.innerHTML = '';
 
-    // left column
+    // firstColumn
     if (userSettings.subscriberCount) {
       const updatedSubBox = createInfoBox('🕭', updatedInfo.subscriberCount);
-      if (updatedSubBox) leftCol.appendChild(updatedSubBox);
+      if (updatedSubBox) firstCol.appendChild(updatedSubBox);
     }
     if (userSettings.location) {
       const updatedCountryBox = createInfoBox('🗺', updatedInfo.country);
-      if (updatedCountryBox) leftCol.appendChild(updatedCountryBox);
+      if (updatedCountryBox) firstCol.appendChild(updatedCountryBox);
     }
     if (userSettings.joinedDate) {
       const updatedJoinedBox = createInfoBox('🗓', updatedInfo.joinedDate);
-      if (updatedJoinedBox) leftCol.appendChild(updatedJoinedBox);
+      if (updatedJoinedBox) firstCol.appendChild(updatedJoinedBox);
     }
 
-    // middle column
+    // secondColumn
     if (userSettings.totalVideos) {
       const updatedVideoBox = createInfoBox('📽', updatedInfo.videoCount);
-      if (updatedVideoBox) midCol.appendChild(updatedVideoBox);
+      if (updatedVideoBox) secondCol.appendChild(updatedVideoBox);
     }
     if (userSettings.totalViewCount) {
       const updatedViewBox = createInfoBox('👁', updatedInfo.viewCount);
-      if (updatedViewBox) midCol.appendChild(updatedViewBox);
+      if (updatedViewBox) secondCol.appendChild(updatedViewBox);
     }
 
-    // playlists
     if (userSettings.playlists) {
       const playlistsData = await fetchPlaylistsData(channelUrl);
       if (playlistsData.playlists && playlistsData.playlists.length > 0) {
         const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord, channelUrl);
-        if (playlistsBox) midCol.appendChild(playlistsBox);
+        if (playlistsBox) secondCol.appendChild(playlistsBox);
       }
     }
 
+    // thirdColumn
     if (userSettings.latestVideo) {
       let updatedLatestVideoInfo = await getLatestVideoInfo(channelUrl);
       if (updatedLatestVideoInfo &&
-        updatedLatestVideoInfo.title !== 'N/A' &&
-        updatedLatestVideoInfo.publishedTime !== 'N/A' &&
-        updatedLatestVideoInfo.length !== 'N/A' &&
-        updatedLatestVideoInfo.videoViewCount !== 'N/A') {
+        updatedLatestVideoInfo.title !== null &&
+        updatedLatestVideoInfo.publishedTime !== null &&
+        updatedLatestVideoInfo.length !== null &&
+        updatedLatestVideoInfo.videoViewCount !== null) {
         const updatedLatestVideoBox = createLatestVideoBox(updatedLatestVideoInfo);
-        midCol.appendChild(updatedLatestVideoBox);
+        thirdCol.appendChild(updatedLatestVideoBox);
       }
     }
 
-    // right column
+    if (userSettings.latestShorts) {
+      let latestShortInfo = await getLatestShortInfo(channelUrl);
+      if (latestShortInfo && latestShortInfo.title !== null && latestShortInfo.views !== null) {
+        const shortBox = createLatestShortBox(latestShortInfo, channelUrl);
+        thirdCol.appendChild(shortBox);
+      }
+    }
+
+    if (userSettings.latestLivestream) {
+      let latestLiveInfo = await getLatestLivestreamInfo(channelUrl);
+      if (latestLiveInfo && latestLiveInfo.videoId) {
+        const liveBox = createLatestLivestreamBox(latestLiveInfo);
+        thirdCol.appendChild(liveBox);
+      }
+    }
+
+    // fourthColumn
     if (userSettings.description && updatedInfo.hasDescription) {
       const updatedDescBox = createInfoBox('🖍', ' ');
       attachDescriptionTooltip(updatedDescBox, updatedInfo.description);
-      rightCol.appendChild(updatedDescBox);
+      fourthCol.appendChild(updatedDescBox);
     }
 
-    if (userSettings.externalLinks && channelInfo.hasLinks && channelInfo.links && channelInfo.links.length > 0) {
+    if (userSettings.externalLinks && updatedInfo.hasLinks && updatedInfo.links && updatedInfo.links.length > 0) {
       const linksBox = createLinkBox('🖇', null);
       linksBox.style.cursor = 'pointer';
 
@@ -490,28 +513,18 @@
           }, 300);
           isLinksPopupOpen = false;
         } else {
-          displayExternalLinksPopup(channelInfo.links, linksBox);
+          displayExternalLinksPopup(updatedInfo.links, linksBox);
           isLinksPopupOpen = true;
-
-          const originalClickOutside = document.querySelector('.yt-enhanced-info-popup');
-          if (originalClickOutside) {
-            const resetState = () => { isLinksPopupOpen = false; };
-            setTimeout(() => {
-              if (originalClickOutside.parentNode) {
-                originalClickOutside.addEventListener('remove', resetState);
-              }
-            }, 0);
-          }
         }
       });
 
-      rightColumn.appendChild(linksBox);
+      fourthCol.appendChild(linksBox);
     }
 
     if (userSettings.businessEmail && updatedInfo.hasBusinessEmail && updatedInfo.businessEmail) {
       const updatedEmailBox = createLinkBox('✉︎', updatedInfo.businessEmail);
       updatedEmailBox.style.cursor = 'pointer';
-      rightCol.appendChild(updatedEmailBox);
+      fourthCol.appendChild(updatedEmailBox);
     }
   }
 
@@ -622,16 +635,16 @@
 
     const titleRegex = /"title":\{"runs":\[\{"text":"((?:\\.|[^"\\])*)"/;
     const titleMatch = text.match(titleRegex);
-    const title = titleMatch ? decodeEscapedString(titleMatch[1]) : 'N/A';
+    const title = titleMatch ? decodeEscapedString(titleMatch[1]) : null;
 
     const publishedTimeRegex = /"publishedTimeText":\{"simpleText":"([^"]+)"/;
     const publishedTimeMatch = text.match(publishedTimeRegex);
-    const publishedTime = publishedTimeMatch ? publishedTimeMatch[1] : 'N/A';
+    const publishedTime = publishedTimeMatch ? publishedTimeMatch[1] : null;
 
     const lengthViewRegex = /"lengthText":\{"accessibility":\{"accessibilityData":\{"label":"[^"]+"\}\},"simpleText":"([^"]+)"\},"viewCountText":\{"simpleText":"([^"]+)"/;
     const lengthViewMatch = text.match(lengthViewRegex);
-    const lengthText = lengthViewMatch ? lengthViewMatch[1] : 'N/A';
-    const videoViewCount = lengthViewMatch ? lengthViewMatch[2] : 'N/A';
+    const lengthText = lengthViewMatch ? lengthViewMatch[1] : null;
+    const videoViewCount = lengthViewMatch ? lengthViewMatch[2] : null;
 
     const linkRegex = /{"content":{"videoRenderer":{"videoId":"([^"]+)"/;
     const linkMatch = text.match(linkRegex);
@@ -649,6 +662,99 @@
       videoId,
       thumbnail
     };
+  };
+
+  const getLatestLivestreamInfo = async (channelUrl) => {
+    try {
+      const response = await fetch(channelUrl + '/streams');
+      const text = await response.text();
+
+      const liveBadgeRegex = /"metadataBadgeRenderer"\s*:\s*\{\s*"icon"\s*:\s*\{\s*"iconType"\s*:\s*"CHECK_CIRCLE_THICK"/;
+      const hasLiveBadge = !!text.match(liveBadgeRegex);
+
+      if (!hasLiveBadge) {
+        return {
+          title: null,
+          publishedTime: null,
+          length: null,
+          videoViewCount: null,
+          videoId: null,
+          thumbnail: null
+        };
+      }
+
+      const titleRegex = /"title":\{"runs":\[\{"text":"((?:\\.|[^"\\])*)"/;
+      const titleMatch = text.match(titleRegex);
+      const title = titleMatch ? decodeEscapedString(titleMatch[1]) : null;
+
+      const publishedTimeRegex = /"publishedTimeText":\{"simpleText":"([^"]+)"/;
+      const publishedTimeMatch = text.match(publishedTimeRegex);
+      const publishedTime = publishedTimeMatch ? publishedTimeMatch[1] : null;
+
+      const lengthViewRegex = /"lengthText":\{"accessibility":\{"accessibilityData":\{"label":"[^"]+"\}\},"simpleText":"([^"]+)"\},"viewCountText":\{"simpleText":"([^"]+)"/;
+      const lengthViewMatch = text.match(lengthViewRegex);
+      const lengthText = lengthViewMatch ? lengthViewMatch[1] : null;
+      const videoViewCount = lengthViewMatch ? lengthViewMatch[2] : null;
+
+      const linkRegex = /{"content":{"videoRenderer":{"videoId":"([^"]+)"/;
+      const linkMatch = text.match(linkRegex);
+      const videoId = linkMatch ? linkMatch[1] : null;
+
+      const thumbnailRegex = /"thumbnail":\{"thumbnails":\[\{"url":"([^"]+)"/;
+      const thumbnailMatch = text.match(thumbnailRegex);
+      const thumbnail = thumbnailMatch ? thumbnailMatch[1] : null;
+
+      return {
+        title,
+        publishedTime,
+        length: lengthText,
+        videoViewCount,
+        videoId,
+        thumbnail
+      };
+    } catch (e) {
+      return {
+        title: null,
+        publishedTime: null,
+        length: null,
+        videoViewCount: null,
+        videoId: null,
+        thumbnail: null
+      };
+    }
+  };
+
+  const getLatestShortInfo = async (channelUrl) => {
+    try {
+
+      const response = await fetch(channelUrl + '/shorts');
+      const text = await response.text();
+
+      const shortRegex = /"overlayMetadata":\{"primaryText":\{"content":"((?:\\.|[^"\\])*)"\},"secondaryText":\{"content":"([^"]+)"\}\},"thumbnailViewModel":\{"thumbnailViewModel":\{"image":\{"sources":\[\{"url":"([^"]+)"/;
+      const m = text.match(shortRegex);
+
+      const title = m && m[1] ? decodeEscapedString(m[1]) : null;
+      const views = m && m[2] ? m[2] : null;
+      const thumbnail = m && m[3] ? m[3] : null;
+
+      const vidRegex = /"reelWatchEndpoint"\s*:\s*\{\s*"videoId"\s*:\s*"([^"]+)"/;
+      let vidMatch = text.match(vidRegex);
+      let videoId = vidMatch ? vidMatch[1] : null;
+
+      return {
+        title,
+        views,
+        thumbnail,
+        videoId
+      };
+    } catch (e) {
+      return {
+        title: null,
+        views: null,
+        thumbnail: null,
+        videoId: null
+      };
+    }
   };
 
   function createLatestVideoBox(latestVideoInfo) {
@@ -783,6 +889,235 @@
     return box;
   }
 
+  function createLatestShortBox(latestShortInfo, channelUrl) {
+    const box = document.createElement('div');
+    box.className = 'yt-enhanced-info-item';
+    box.textContent = '🎞 ' + latestShortInfo.views;
+    styleInfoBox(box);
+    box.style.cursor = 'pointer';
+    let tooltip;
+
+    box.addEventListener('mouseover', (e) => {
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'yt-enhanced-latest-short-tooltip';
+        tooltip.style.position = 'absolute';
+        tooltip.style.background = GENERAL_BACKGROUND;
+        tooltip.style.color = TEXT_COLOR;
+        tooltip.style.padding = '4px';
+        tooltip.style.border = BORDER_STYLE;
+        tooltip.style.borderRadius = BORDER_RADIUS;
+        tooltip.style.boxShadow = BOX_SHADOW;
+        tooltip.style.zIndex = POPUP_ZINDEX;
+        tooltip.style.display = 'block';
+        tooltip.style.flexDirection = 'column';
+        tooltip.style.gap = GAP;
+        applyAnimationStyles(tooltip);
+
+        const middleRow = document.createElement('div');
+        middleRow.style.display = 'flex';
+        middleRow.style.justifyContent = 'center';
+        middleRow.style.alignItems = 'center';
+        middleRow.style.marginBottom = '4px';
+
+        if (latestShortInfo.thumbnail) {
+          const thumbnailImg = document.createElement('img');
+          thumbnailImg.src = latestShortInfo.thumbnail;
+          thumbnailImg.style.borderRadius = BORDER_RADIUS;
+          thumbnailImg.style.border = BORDER_STYLE;
+          thumbnailImg.style.maxWidth = '150px';
+          thumbnailImg.style.height = 'auto';
+          thumbnailImg.style.cursor = 'pointer';
+          thumbnailImg.addEventListener('load', () => {
+            tooltip.style.width = thumbnailImg.offsetWidth + 'px';
+          });
+          middleRow.appendChild(thumbnailImg);
+        }
+
+        const bottomRow = document.createElement('div');
+        bottomRow.style.padding = PADDING;
+        bottomRow.style.border = BORDER_STYLE;
+        bottomRow.style.borderRadius = BORDER_RADIUS;
+        bottomRow.style.fontSize = FONT_SIZE;
+        bottomRow.style.whiteSpace = 'normal';
+        bottomRow.style.wordBreak = 'break-word';
+        bottomRow.textContent = latestShortInfo.title || '';
+
+        tooltip.appendChild(middleRow);
+        tooltip.appendChild(bottomRow);
+        document.body.appendChild(tooltip);
+
+        const rect = box.getBoundingClientRect();
+        tooltip.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+        tooltip.style.left = (rect.left + window.scrollX) + 'px';
+        requestAnimationFrame(() => {
+          tooltip.style.transform = 'translateY(0)';
+          tooltip.style.opacity = '1';
+        });
+      }
+    });
+
+    box.addEventListener('mousemove', (e) => {
+      if (tooltip) positionTooltip(e, tooltip);
+    });
+
+    box.addEventListener('mouseout', () => {
+      if (tooltip) {
+        tooltip.style.transform = 'translateY(-10px)';
+        tooltip.style.opacity = '0';
+        setTimeout(() => {
+          if (tooltip) {
+            tooltip.remove();
+            tooltip = null;
+          }
+        }, 300);
+      }
+    });
+
+    box.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (latestShortInfo.videoId) {
+        window.open('https://www.youtube.com/shorts/' + latestShortInfo.videoId, '_blank', 'noopener');
+      } else {
+        window.open(channelUrl + '/shorts', '_blank', 'noopener');
+      }
+    });
+
+    return box;
+  }
+
+  function createLatestLivestreamBox(latestLiveInfo) {
+    const box = document.createElement('div');
+    box.className = 'yt-enhanced-info-item';
+    box.textContent = '◉ ' + latestLiveInfo.publishedTime;
+    styleInfoBox(box);
+    box.style.cursor = 'pointer';
+    let tooltip;
+
+    box.addEventListener('mouseover', (e) => {
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'yt-enhanced-latest-video-tooltip';
+        tooltip.style.position = 'absolute';
+        tooltip.style.background = GENERAL_BACKGROUND;
+        tooltip.style.color = TEXT_COLOR;
+        tooltip.style.padding = '4px';
+        tooltip.style.border = BORDER_STYLE;
+        tooltip.style.borderRadius = BORDER_RADIUS;
+        tooltip.style.boxShadow = BOX_SHADOW;
+        tooltip.style.zIndex = POPUP_ZINDEX;
+        tooltip.style.display = 'block';
+        tooltip.style.flexDirection = 'column';
+        tooltip.style.gap = GAP;
+        applyAnimationStyles(tooltip);
+
+        const topRow = document.createElement('div');
+        topRow.style.display = 'flex';
+        topRow.style.gap = GAP;
+        topRow.style.marginBottom = '4px';
+
+        const viewsCell = (() => {
+          const cell = document.createElement('div');
+          cell.style.flex = '1';
+          cell.style.display = 'flex';
+          cell.style.alignItems = 'center';
+          cell.style.justifyContent = 'center';
+          cell.style.padding = PADDING;
+          cell.style.border = BORDER_STYLE;
+          cell.style.borderRadius = BORDER_RADIUS;
+          cell.style.fontSize = FONT_SIZE;
+          cell.textContent = latestLiveInfo.videoViewCount;
+          return cell;
+        })();
+
+        const lengthCell = (() => {
+          const cell = document.createElement('div');
+          cell.style.flex = '1';
+          cell.style.display = 'flex';
+          cell.style.alignItems = 'center';
+          cell.style.justifyContent = 'center';
+          cell.style.padding = PADDING;
+          cell.style.border = BORDER_STYLE;
+          cell.style.borderRadius = BORDER_RADIUS;
+          cell.style.fontSize = FONT_SIZE;
+          cell.textContent = latestLiveInfo.length;
+          return cell;
+        })();
+
+        topRow.appendChild(viewsCell);
+        topRow.appendChild(lengthCell);
+
+        const middleRow = document.createElement('div');
+        middleRow.style.display = 'flex';
+        middleRow.style.justifyContent = 'center';
+        middleRow.style.alignItems = 'center';
+        middleRow.style.marginBottom = '4px';
+
+        if (latestLiveInfo.thumbnail) {
+          const thumbnailImg = document.createElement('img');
+          thumbnailImg.src = latestLiveInfo.thumbnail;
+          thumbnailImg.style.borderRadius = BORDER_RADIUS;
+          thumbnailImg.style.border = BORDER_STYLE;
+          thumbnailImg.style.maxWidth = '150px';
+          thumbnailImg.style.height = 'auto';
+          thumbnailImg.style.cursor = 'pointer';
+          thumbnailImg.addEventListener('load', () => {
+            tooltip.style.width = thumbnailImg.offsetWidth + 'px';
+          });
+          middleRow.appendChild(thumbnailImg);
+        }
+
+        const bottomRow = document.createElement('div');
+        bottomRow.style.padding = PADDING;
+        bottomRow.style.border = BORDER_STYLE;
+        bottomRow.style.borderRadius = BORDER_RADIUS;
+        bottomRow.style.fontSize = FONT_SIZE;
+        bottomRow.style.whiteSpace = 'normal';
+        bottomRow.style.wordBreak = 'break-word';
+        bottomRow.textContent = latestLiveInfo.title;
+
+        tooltip.appendChild(topRow);
+        tooltip.appendChild(middleRow);
+        tooltip.appendChild(bottomRow);
+        document.body.appendChild(tooltip);
+
+        const rect = box.getBoundingClientRect();
+        tooltip.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+        tooltip.style.left = (rect.left + window.scrollX) + 'px';
+        requestAnimationFrame(() => {
+          tooltip.style.transform = 'translateY(0)';
+          tooltip.style.opacity = '1';
+        });
+      }
+    });
+
+    box.addEventListener('mousemove', (e) => {
+      if (tooltip) positionTooltip(e, tooltip);
+    });
+
+    box.addEventListener('mouseout', () => {
+      if (tooltip) {
+        tooltip.style.transform = 'translateY(-10px)';
+        tooltip.style.opacity = '0';
+        setTimeout(() => {
+          if (tooltip) {
+            tooltip.remove();
+            tooltip = null;
+          }
+        }, 300);
+      }
+    });
+
+    box.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (latestLiveInfo.videoId) {
+        window.open('https://www.youtube.com/watch?v=' + latestLiveInfo.videoId, '_blank', 'noopener');
+      }
+    });
+
+    return box;
+  }
+
   const addChannelInfo = async (commentElement) => {
     const channelUrlLookup = 'div#header-author a';
     const headerElement = commentElement.querySelector('div#header-author');
@@ -808,75 +1143,95 @@
     infoContainer.style.width = '100%';
     infoContainer.style.maxWidth = '800px';
 
-    const leftColumn = document.createElement('div');
-    leftColumn.style.display = 'flex';
-    leftColumn.style.flexDirection = 'column';
-    leftColumn.style.gap = '4px';
+    const firstColumn = document.createElement('div');
+    firstColumn.style.display = 'flex';
+    firstColumn.style.flexDirection = 'column';
+    firstColumn.style.gap = '4px';
 
-    const middleColumn = document.createElement('div');
-    middleColumn.style.display = 'flex';
-    middleColumn.style.flexDirection = 'column';
-    middleColumn.style.gap = '4px';
+    const secondColumn = document.createElement('div');
+    secondColumn.style.display = 'flex';
+    secondColumn.style.flexDirection = 'column';
+    secondColumn.style.gap = '4px';
 
-    const rightColumn = document.createElement('div');
-    rightColumn.style.display = 'flex';
-    rightColumn.style.flexDirection = 'column';
-    rightColumn.style.gap = '4px';
+    const thirdColumn = document.createElement('div');
+    thirdColumn.style.display = 'flex';
+    thirdColumn.style.flexDirection = 'column';
+    thirdColumn.style.gap = '4px';
 
-    // left column
+    const fourthColumn = document.createElement('div');
+    fourthColumn.style.display = 'flex';
+    fourthColumn.style.flexDirection = 'column';
+    fourthColumn.style.gap = '4px';
+
+    // firstColumn
     if (userSettings.subscriberCount) {
       const subBox = createInfoBox('🕭', channelInfo.subscriberCount);
-      if (subBox) leftColumn.appendChild(subBox);
+      if (subBox) firstColumn.appendChild(subBox);
     }
 
     if (userSettings.location) {
       const countryBox = createInfoBox('🗺', channelInfo.country);
-      if (countryBox) leftColumn.appendChild(countryBox);
+      if (countryBox) firstColumn.appendChild(countryBox);
     }
 
     if (userSettings.joinedDate) {
       const joinedBox = createInfoBox('🗓', channelInfo.joinedDate);
-      if (joinedBox) leftColumn.appendChild(joinedBox);
+      if (joinedBox) firstColumn.appendChild(joinedBox);
     }
 
-    // middle column
+    // secondColumn
     if (userSettings.totalVideos) {
       const videoBox = createInfoBox('📽', channelInfo.videoCount);
-      if (videoBox) middleColumn.appendChild(videoBox);
+      if (videoBox) secondColumn.appendChild(videoBox);
     }
 
     if (userSettings.totalViewCount) {
       const viewBox = createInfoBox('👁', channelInfo.viewCount);
-      if (viewBox) middleColumn.appendChild(viewBox);
+      if (viewBox) secondColumn.appendChild(viewBox);
     }
 
-    // latest video
-    if (userSettings.latestVideo) {
-      let latestVideoInfo = await getLatestVideoInfo(channelUrl);
-      if (latestVideoInfo &&
-          latestVideoInfo.title !== 'N/A' &&
-          latestVideoInfo.publishedTime !== 'N/A' &&
-          latestVideoInfo.length !== 'N/A' &&
-          latestVideoInfo.videoViewCount !== 'N/A') {
-        const latestVideoBox = createLatestVideoBox(latestVideoInfo);
-        middleColumn.appendChild(latestVideoBox);
-      }
-    }
-
-    // playlists
     if (userSettings.playlists) {
       const playlistsData = await fetchPlaylistsData(channelUrl);
       if (playlistsData.playlists && playlistsData.playlists.length > 0) {
         const playlistsBox = createPlaylistsBox(playlistsData.playlists, playlistsData.localizedPlaylistWord, channelUrl);
-        if (playlistsBox) middleColumn.appendChild(playlistsBox);
+        if (playlistsBox) secondColumn.appendChild(playlistsBox);
       }
     }
 
-    // right column
+    // thirdColumn
+    if (userSettings.latestVideo) {
+      let latestVideoInfo = await getLatestVideoInfo(channelUrl);
+      if (latestVideoInfo &&
+          latestVideoInfo.title !== null &&
+          latestVideoInfo.publishedTime !== null &&
+          latestVideoInfo.length !== null &&
+          latestVideoInfo.videoViewCount !== null) {
+        const latestVideoBox = createLatestVideoBox(latestVideoInfo);
+        thirdColumn.appendChild(latestVideoBox);
+      }
+    }
+
+    if (userSettings.latestShorts) {
+      let latestShortInfo = await getLatestShortInfo(channelUrl);
+      if (latestShortInfo && latestShortInfo.title !== null && latestShortInfo.views !== null) {
+        const shortBox = createLatestShortBox(latestShortInfo, channelUrl);
+        thirdColumn.appendChild(shortBox);
+      }
+    }
+
+    if (userSettings.latestLivestream) {
+      let latestLiveInfo = await getLatestLivestreamInfo(channelUrl);
+      if (latestLiveInfo && latestLiveInfo.videoId) {
+        const liveBox = createLatestLivestreamBox(latestLiveInfo);
+        thirdColumn.appendChild(liveBox);
+      }
+    }
+
+    // fourthColumn
     if (userSettings.description && channelInfo.hasDescription) {
       const descBox = createInfoBox('🖍', ' ');
       attachDescriptionTooltip(descBox, channelInfo.description);
-      rightColumn.appendChild(descBox);
+      fourthColumn.appendChild(descBox);
     }
 
     if (userSettings.externalLinks && channelInfo.hasLinks && channelInfo.links && channelInfo.links.length > 0) {
@@ -900,31 +1255,22 @@
         } else {
           displayExternalLinksPopup(channelInfo.links, linksBox);
           isLinksPopupOpen = true;
-
-          const originalClickOutside = document.querySelector('.yt-enhanced-info-popup');
-          if (originalClickOutside) {
-            const resetState = () => { isLinksPopupOpen = false; };
-            setTimeout(() => {
-              if (originalClickOutside.parentNode) {
-                originalClickOutside.addEventListener('remove', resetState);
-              }
-            }, 0);
-          }
         }
       });
 
-      rightColumn.appendChild(linksBox);
+      fourthColumn.appendChild(linksBox);
     }
 
     if (userSettings.businessEmail && channelInfo.hasBusinessEmail && channelInfo.businessEmail) {
       const emailBox = createLinkBox('✉︎', channelInfo.businessEmail);
       emailBox.style.cursor = 'pointer';
-      rightColumn.appendChild(emailBox);
+      fourthColumn.appendChild(emailBox);
     }
 
-    if (leftColumn.children.length > 0) infoContainer.appendChild(leftColumn);
-    if (middleColumn.children.length > 0) infoContainer.appendChild(middleColumn);
-    if (rightColumn.children.length > 0) infoContainer.appendChild(rightColumn);
+    if (firstColumn.children.length > 0) infoContainer.appendChild(firstColumn);
+    if (secondColumn.children.length > 0) infoContainer.appendChild(secondColumn);
+    if (thirdColumn.children.length > 0) infoContainer.appendChild(thirdColumn);
+    if (fourthColumn.children.length > 0) infoContainer.appendChild(fourthColumn);
 
     const commentContent = commentElement.querySelector('#content-text');
     if (commentContent && commentContent.parentElement && infoContainer.children.length > 0) {
@@ -937,7 +1283,7 @@
           infoContainer.style.visibility = 'hidden';
           const updatedChannelUrl = commentElement.querySelector(channelUrlLookup).href;
           const updatedInfo = await getChannelInfo(updatedChannelUrl);
-          await updateInfoColumns(updatedInfo, leftColumn, middleColumn, rightColumn, updatedChannelUrl);
+          await updateInfoColumns(updatedInfo, firstColumn, secondColumn, thirdColumn, fourthColumn, updatedChannelUrl);
           infoContainer.style.visibility = 'visible';
         }
       });
@@ -949,7 +1295,7 @@
     );
   };
 
-  // MAIN // FIXED JULY 25TH 2025 BUG
+  // MAIN //
   const commentObserver = new MutationObserver(mutationsList => {
     const processedElements = new Set();
 
@@ -986,5 +1332,4 @@
     document.querySelector('ytd-app'),
     { childList: true, subtree: true }
   );
-
 })();
