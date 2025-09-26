@@ -71,24 +71,8 @@
       flex: 0 0 auto;
     }
 
-    .checkbox-item label{
-      margin:0;
-      cursor:pointer;
-      flex:1;
-      font-size:0.95rem;
-      font-weight:600;
-      color:var(--fg);
-    }
-
-    .checkbox-item .symbol{
-      margin-left:auto;
-      font-size:1rem;
-      opacity:.9;
-    }
-
     .info{
       grid-column: 1 / span 2;
-      grid-row: 3;
       text-align:center;
       font-size:0.92rem;
       color:var(--muted);
@@ -182,6 +166,20 @@
         <input type="checkbox" id="businessEmail" checked>
         <label for="businessEmail">Business Email</label>
         <span class="symbol">✉︎</span>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column: 1 / span 2;">
+      <h3>Position</h3>
+      <div style="display: flex; gap: 24px; align-items: center;">
+        <div class="checkbox-item" style="margin-bottom: 0;">
+          <input type="radio" id="positionBelow" name="infoBoxPosition" value="below" checked>
+          <label for="positionBelow">Below handle</label>
+        </div>
+        <div class="checkbox-item" style="margin-bottom: 0;">
+          <input type="radio" id="positionAdjacent" name="infoBoxPosition" value="adjacent">
+          <label for="positionAdjacent">Next to handle</label>
+        </div>
       </div>
     </div>
 

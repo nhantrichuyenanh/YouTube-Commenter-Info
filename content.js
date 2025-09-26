@@ -19,7 +19,10 @@
     // fourth column
     description: true,
     externalLinks: true,
-    businessEmail: true
+    businessEmail: true,
+
+    // position
+    infoBoxPosition: 'below'
   };
 
   // load user settings from storage
@@ -1272,9 +1275,22 @@
     if (thirdColumn.children.length > 0) infoContainer.appendChild(thirdColumn);
     if (fourthColumn.children.length > 0) infoContainer.appendChild(fourthColumn);
 
-    const commentContent = commentElement.querySelector('#content-text');
-    if (commentContent && commentContent.parentElement && infoContainer.children.length > 0) {
-      commentContent.parentElement.insertBefore(infoContainer, commentContent);
+    // NEW: Sep 26, 2025
+    if (infoContainer.children.length > 0) {
+      if (userSettings.infoBoxPosition === 'adjacent') {
+        const headerAuthor = commentElement.querySelector('#header-author');
+        if (headerAuthor) {
+          infoContainer.style.marginLeft = '8px';
+          infoContainer.style.marginTop = '0px';
+          infoContainer.style.marginBottom = '0px';
+          headerAuthor.appendChild(infoContainer);
+        }
+      } else {
+        const commentContent = commentElement.querySelector('#content-text');
+        if (commentContent && commentContent.parentElement) {
+          commentContent.parentElement.insertBefore(infoContainer, commentContent);
+        }
+      }
     }
 
     const observer = new MutationObserver(mutationsList => {
