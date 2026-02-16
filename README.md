@@ -1,23 +1,6 @@
-# YouTube™ Commenter Info
-
-Features:
-- Column 1:
-  - Subscriber Count
-  - Channel Location
-  - Joined Date
-- Column 2:
-  - Total Videos
-  - Total View Count
-  - Playlists Count<sup>click to view playlists and their thumbnail to be directed</sup> and 🎙<sup>click to be redirected to the channel's playlists</sup>
-- Column 3: click to be redirected, hover over to see: **View Count**, **Length**, **Thumbnail**, and **Title**
-  - Latest Video
-  - Latest Shorts
-  - Latest Livestream
-- Column 4:
-  - Description<sup>hover over</sup>
-  - Channel Links<sup>click to see links: **Title and Icon**</sup>
-  - Business Email<sup>click on it to be redirected to the channel's about page</sup>
-- Put info boxes either below or next to handle
-- Hide info boxes in the options menu to reduce visual clutter
-- Automatically hides info box(es) if data is unavailable
-- Updates dynamically<sup>scrolling down, checking replies, comment section set to newest</sup>
+TODO: 
+- Channels with over 30 playlists will still be displayed as 𝄞 30 playlists due to YouTube loading them dynamically.
+- Might not support custom YouTube theme in notification panel when user clicks a comment notification.
+- Fix ampersand symbol rendering as \u0026 like 🗺 Svalbard \u0026 Jan Mayen.
+- Artist channels with /releases like [LofiGirl](www.youtube.com/@LofiGirl) will override the 𝄞 playlists.
+- Reduce boilerplate code to make future development easier.
