@@ -7,16 +7,20 @@
   "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Commenter-Info",
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*"],
+      "matches": [
+        "https://www.youtube.com/watch*",
+        "https://www.youtube.com/shorts/*",
+        "https://www.youtube.com/channel/*/community*"
+      ],
       "js": ["content.js"],
       "css": ["styles.css"],
       "run_at": "document_end"
     }
   ],
   "host_permissions": [
-    "https://www.youtube.com/watch?*",
+    "https://www.youtube.com/watch*",
     "https://www.youtube.com/shorts/*",
-    "https://www.youtube.com/channel/*/community?*"
+    "https://www.youtube.com/channel/*/community*"
   ],
   "icons": {
     "16": "icon.png",
