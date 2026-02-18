@@ -37,7 +37,7 @@
   const FONT_SIZE = '1rem';
   const POPUP_ZINDEX = '1000000';
   const BORDER_STYLE = '1px solid rgba(128,128,128,0.2)';
-  const GENERAL_BACKGROUND = 'var(--yt-spec-general-background-a, #fff)';
+  const GENERAL_BACKGROUND = 'var(--yt-spec-menu-background, var(--yt-spec-general-background-a))';
   const TEXT_COLOR = 'var(--yt-spec-text-primary, #000)';
   const BOX_SHADOW = '0 2px 8px rgba(0,0,0,0.15)';
 
@@ -377,7 +377,7 @@
 
     const box = document.createElement('div');
     box.className = 'yt-enhanced-info-item';
-    box.textContent = '𝄞 ' + playlists.length + ' ' + localizedPlaylistWord;
+    box.textContent = '𝄞 ' + (playlists.length >= 30 ? '30+' : playlists.length) + ' ' + localizedPlaylistWord;
     styleInfoBox(box);
     box.style.cursor = 'pointer';
 
@@ -415,8 +415,9 @@
 
     // redirect button if 2+ playlists
     if (playlists.length >= 2) {
-      const redirectButton = createLinkBox('🎙', channelUrl + '/playlists');
+      const redirectButton = createLinkBox('☰♪', channelUrl + '/playlists');
       redirectButton.style.cursor = 'pointer';
+      redirectButton.style.textDecoration = 'none';
       container.appendChild(redirectButton);
     }
 
@@ -578,7 +579,7 @@
 
     const countryRegex = /"country":"([^"]+)"/;
     const countryMatch = text.match(countryRegex);
-    const country = countryMatch ? countryMatch[1] : null;
+    const country = countryMatch ? decodeEscapedString(countryMatch[1]) : null;
     const videoCountRegex = /"videoCountText":"([^"]+)"/;
     const videoCountMatch = text.match(videoCountRegex);
     const videoCount = videoCountMatch ? videoCountMatch[1] : null;

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Commenter Info",
-  "version": "1.7.1",
+  "version": "1.7.3",
   "description": "Displays youtube.com/@[HANDLE]/about information and more below the handles of YouTube comments.",
   "author": "Nhân Trí",
   "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Commenter-Info",
@@ -38,7 +38,8 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "{a271ed8b-79b5-4c55-88d4-7ddeb399fb26}",
-      "strict_min_version": "109.0"
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {"required": ["none"]}
     }
   }
 }
