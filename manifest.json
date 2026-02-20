@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "YouTube Commenter Info",
-  "version": "1.7.3",
-  "description": "Displays youtube.com/@[HANDLE]/about information and more below the handles of YouTube comments.",
+  "version": "1.7.4",
+  "description": "Displays YouTube comment' information and more below their handles.",
   "author": "Nhân Trí",
   "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Commenter-Info",
   "content_scripts": [
