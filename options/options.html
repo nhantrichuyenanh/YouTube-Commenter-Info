@@ -13,7 +13,7 @@
       --card-border: rgba(0,0,0,0.06);
       --radius: 10px;
       --gap-md: 16px;
-      --container-w: 760px;
+      --container-max: 500px;
       --shadow: 0 6px 18px rgba(15,15,20,0.04);
     }
 
@@ -23,7 +23,7 @@
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       background: var(--bg);
       color: var(--fg);
-      display:flex;
+      display:block;
       align-items:flex-start;
       justify-content:center;
       max-height: auto;
@@ -33,11 +33,13 @@
 
     .container{
       width:100%;
-      max-width:var(--container-w);
+      max-width:var(--container-max);
+      margin: 0 auto;
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-auto-rows: auto;
       gap: var(--gap-md);
+      align-items: start;
     }
 
     .card{
@@ -47,6 +49,7 @@
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow);
       box-sizing: border-box;
+      min-width: 0;
     }
 
     .card h3{
@@ -71,12 +74,8 @@
       flex: 0 0 auto;
     }
 
-    .info{
-      grid-column: 1 / span 2;
-      text-align:center;
-      font-size:0.92rem;
-      color:var(--muted);
-      padding:10px 8px;
+    .symbol {
+      margin-left: auto;
     }
 
     @media (prefers-color-scheme: dark){
@@ -169,8 +168,8 @@
       </div>
     </div>
 
-    <div class="card" style="grid-column: 1 / span 2;">
-      <h3>Position</h3>
+    <div class="card" style="display: flex; align-items: center; gap: 34px; grid-column: 1 / -1;">
+      <h3 style="margin: 0">Position</h3>
       <div style="display: flex; gap: 24px; align-items: center;">
         <div class="checkbox-item" style="margin-bottom: 0;">
           <input type="radio" id="positionBelow" name="infoBoxPosition" value="below" checked>
@@ -183,8 +182,8 @@
       </div>
     </div>
 
-    <div class="card info">
-      Refresh YouTube tab after changing options.<br>
+    <div style="grid-column: 1 / -1; color:var(--muted); padding:10px 8px; text-align: center;">
+      Refresh YouTube tab after changing options. <br>
       Your selection is automatically saved.
     </div>
   </div>
