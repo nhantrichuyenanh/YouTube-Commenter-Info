@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Commenter Info",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "Displays YouTube comment' information and more below their handles.",
   "author": "Nhân Trí",
   "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Commenter-Info",
@@ -10,7 +10,7 @@
       "matches": [
         "https://www.youtube.com/watch*",
         "https://www.youtube.com/shorts/*",
-        "https://www.youtube.com/channel/*/community*"
+        "https://www.youtube.com/post/*"
       ],
       "js": ["content.js"],
       "css": ["styles.css"],
@@ -20,7 +20,7 @@
   "host_permissions": [
     "https://www.youtube.com/watch*",
     "https://www.youtube.com/shorts/*",
-    "https://www.youtube.com/channel/*/community*"
+    "https://www.youtube.com/post/*"
   ],
   "icons": {
     "16": "icon.png",
