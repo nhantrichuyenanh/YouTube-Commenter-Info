@@ -36,7 +36,6 @@
   const GENERAL_BACKGROUND = 'var(--yt-spec-menu-background, var(--yt-spec-general-background-a))'; // tbh var(--yt-spec-general-background-a) doesn't matter but who cares lol
   const TEXT_COLOR = 'var(--yt-spec-text-primary, #000)';
   const BOX_SHADOW = '0 2px 8px rgba(0,0,0,0.15)';
-  const CURSOR = 'pointer';
 
   // UTILITY / DOM, STYLE, TOOLTIP, POPUP HELPERS //
   function decodeEscapedString(s) { // decodes sequences like \u0026 and \ to & and " respectively
@@ -180,7 +179,6 @@
           img.style.width = '60px';
           img.style.height = '45px';
           img.style.borderRadius = '2px';
-          img.style.cursor = CURSOR;
           thumbnailColumn.appendChild(img);
         }
 
@@ -218,13 +216,11 @@
         middleColumn.style.textAlign = 'center';
         middleColumn.style.verticalAlign = 'middle';
         middleColumn.style.textDecoration = 'none';
-        middleColumn.style.cursor = CURSOR;
         if (item.icon) {
           const img = document.createElement('img');
           img.src = item.icon;
           img.style.width = '16px';
           img.style.height = '16px';
-          img.style.cursor = CURSOR;
           middleColumn.appendChild(img);
         }
 
@@ -661,7 +657,6 @@
           thumbnailImg.style.border = BORDER_STYLE;
           thumbnailImg.style.maxWidth = '150px';
           thumbnailImg.style.height = 'auto';
-          thumbnailImg.style.cursor = CURSOR;
           thumbnailImg.addEventListener('load', () => {
             tooltip.style.width = thumbnailImg.offsetWidth + 'px';
           });
@@ -762,7 +757,6 @@
           thumbnailImg.style.border = BORDER_STYLE;
           thumbnailImg.style.maxWidth = '150px';
           thumbnailImg.style.height = 'auto';
-          thumbnailImg.style.cursor = CURSOR;
           thumbnailImg.addEventListener('load', () => {
             tooltip.style.width = thumbnailImg.offsetWidth + 'px';
           });
@@ -832,7 +826,7 @@
     box.className = 'yt-enhanced-info-item';
     box.textContent = '𝄞 ' + (playlists.length >= 30 ? '30+' : playlists.length) + ' ' + localizedPlaylistWord;
     styleInfoBox(box);
-    box.style.cursor = CURSOR;
+    box.style.cursor = 'pointer';
 
     togglePopup(box, (el) => displayPopupPlaylists(playlists, el));
 
@@ -841,7 +835,7 @@
     // redirect button appears if commenter has more than 1 playlists
     if (playlists.length >= 2) {
       const redirectButton = createLinkBox('☰♪', channelUrl + '/playlists');
-      redirectButton.style.cursor = CURSOR;
+      redirectButton.style.cursor = 'pointer';
       redirectButton.style.textDecoration = 'none';
       container.appendChild(redirectButton);
     }
@@ -909,13 +903,13 @@
     }
     if (userSettings.externalLinks && info.hasLinks && info.links && info.links.length > 0) {
       const linksBox = createLinkBox('🖇', null);
-      linksBox.style.cursor = CURSOR;
+      linksBox.style.cursor = 'pointer';
       togglePopup(linksBox, (el) => displayPopupExternalLinks(info.links, el));
       fourthCol.appendChild(linksBox);
     }
     if (userSettings.businessEmail && info.hasBusinessEmail && info.businessEmail) {
       const emailBox = createLinkBox('✉︎', info.businessEmail);
-      emailBox.style.cursor = CURSOR;
+      emailBox.style.cursor = 'pointer';
       emailBox.style.textDecoration = 'none';
       fourthCol.appendChild(emailBox);
     }
