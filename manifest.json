@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "YouTube Commenter Info",
   "version": "1.7.6",
-  "description": "Displays YouTube comment' information and more below their handles.",
+  "description": "Displays YouTube comments' information and more below their handles.",
   "author": "Nhân Trí",
   "homepage_url": "https://github.com/nhantrichuyenanh/YouTube-Commenter-Info",
   "content_scripts": [
