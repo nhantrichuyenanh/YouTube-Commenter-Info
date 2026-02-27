@@ -34,7 +34,7 @@
   const POPUP_ZINDEX = '1000000';
   const BORDER_STYLE = '1px solid rgba(128,128,128,0.2)';
   const GENERAL_BACKGROUND = 'var(--yt-spec-menu-background, var(--yt-spec-general-background-a))'; // tbh var(--yt-spec-general-background-a) doesn't matter but who cares lol
-  const TEXT_COLOR = 'var(--yt-spec-text-primary, #000)';
+  const TEXT_COLOR = 'var(--yt-spec-text-primary)';
   const BOX_SHADOW = '0 2px 8px rgba(0,0,0,0.15)';
 
   // UTILITY / DOM, STYLE, TOOLTIP, POPUP HELPERS //
@@ -1033,4 +1033,5 @@
     document.querySelector('ytd-app'),
     { childList: true, subtree: true }
   );
+
 })();
